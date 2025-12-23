@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.2">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!-- Add to &lt;head&gt; for PWA/mobile --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;link rel="manifest" href="data:application/manifest+json,{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"name\":\"Boomerang Sales Intelligence\",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"short_name\":\"SalesApp\",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"start_url\":\".\",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"display\":\"standalone\"</span></p>
+<p class="p1"><span class="s1">}"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="theme-color" content="#1a73e8"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- Add to App component before return --&gt;</span></p>
+<p class="p1"><span class="s1">const urlParams = new URLSearchParams(window.location.search);</span></p>
+<p class="p1"><span class="s1">const sharedProspect = urlParams.get('prospect');</span></p>
+<p class="p1"><span class="s1">if (sharedProspect) setSelectedProspect(JSON.parse(decodeURIComponent(sharedProspect)));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Add Export button in dashboard</span></p>
+<p class="p1"><span class="s1">&lt;button onClick={() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const csv = prospects.map(p =&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>`${p.name},${p.role},${p.company},${p.status},${p.researched}`</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>).join('\n');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const a = document.createElement('a');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>a.href = `data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>a.download = 'sales-pipeline.csv';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>a.click();</span></p>
+<p class="p1"><span class="s1">}}&gt;Export CSV&lt;/button&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Share button in Go/No-Go</span></p>
+<p class="p1"><span class="s1">&lt;button onClick={() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const url = `${window.location.origin}${window.location.pathname}?prospect=${encodeURIComponent(JSON.stringify(selectedProspect))}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>navigator.clipboard.writeText(url);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>alert('Share URL copied!');</span></p>
+<p class="p1"><span class="s1">}}&gt;Share Prospect&lt;/button&gt;</span></p>
+</body>
+</html>
