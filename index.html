@@ -1,48 +1,256 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Outreach Intelligence - Boomerang AI</title>
+
+  <!-- PWA / theme -->
+  <link rel="manifest" href='data:application/manifest+json,{
+    "name":"Boomerang Sales Intelligence",
+    "short_name":"SalesApp",
+    "start_url":".",
+    "display":"standalone"
+  }'>
+  <meta name="theme-color" content="#1a73e8" />
+
+  <!-- React & Babel -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    .app { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1, h2 { color: #1a73e8; }
+    input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
+    button { background: #1a73e8; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+    button:hover { background: #1557b0; }
+    .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 4px; }
+    .prospect-row { background: #f9f9f9; }
+    .content-draft { background: #e8f4fd; padding: 10px; border-left: 4px solid #1a73e8; margin: 10px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #f1f1f1; }
+    .status { padding: 5px 10px; border-radius: 20px; font-size: 0.8em; }
+    .pending { background: #fff3cd; color: #856404; }
+    .invited { background: #d1ecf1; color: #0c5460; }
+    .accepted { background: #d4edda; color: #155724; }
+    .inmailed { background: #e2e3e5; color: #383d41; }
+    .emailed { background: #f8d7da; color: #721c24; }
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!-- Add to &lt;head&gt; for PWA/mobile --&gt;</span></p>
-<p class="p1"><span class="s1">&lt;link rel="manifest" href="data:application/manifest+json,{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"name\":\"Boomerang Sales Intelligence\",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"short_name\":\"SalesApp\",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"start_url\":\".\",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>\"display\":\"standalone\"</span></p>
-<p class="p1"><span class="s1">}"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="theme-color" content="#1a73e8"&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;!-- Add to App component before return --&gt;</span></p>
-<p class="p1"><span class="s1">const urlParams = new URLSearchParams(window.location.search);</span></p>
-<p class="p1"><span class="s1">const sharedProspect = urlParams.get('prospect');</span></p>
-<p class="p1"><span class="s1">if (sharedProspect) setSelectedProspect(JSON.parse(decodeURIComponent(sharedProspect)));</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// Add Export button in dashboard</span></p>
-<p class="p1"><span class="s1">&lt;button onClick={() =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const csv = prospects.map(p =&gt;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>`${p.name},${p.role},${p.company},${p.status},${p.researched}`</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>).join('\n');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const a = document.createElement('a');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>a.href = `data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>a.download = 'sales-pipeline.csv';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>a.click();</span></p>
-<p class="p1"><span class="s1">}}&gt;Export CSV&lt;/button&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// Share button in Go/No-Go</span></p>
-<p class="p1"><span class="s1">&lt;button onClick={() =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const url = `${window.location.origin}${window.location.pathname}?prospect=${encodeURIComponent(JSON.stringify(selectedProspect))}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>navigator.clipboard.writeText(url);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>alert('Share URL copied!');</span></p>
-<p class="p1"><span class="s1">}}&gt;Share Prospect&lt;/button&gt;</span></p>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function usePersistentState(key, initialValue) {
+      const [value, setValue] = useState(() => {
+        try {
+          const item = localStorage.getItem(key);
+          return item ? JSON.parse(item) : initialValue;
+        } catch {
+          return initialValue;
+        }
+      });
+      useEffect(() => {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch {}
+      }, [key, value]);
+      return [value, setValue];
+    }
+
+    const roleInsights = {
+      'VP Sales': 'driving pipeline and multi-threading strategic deals',
+      'CRO': 'owning revenue and de-risking forecasted pipeline',
+      'Director Sales': 'running outbound and pipeline coverage',
+    };
+
+    function generateContent(prospect, icp, companyInfo) {
+      const insight = roleInsights[prospect.role] || 'leading GTM and outbound';
+      return {
+        note: `Hi ${prospect.name}, saw your work ${insight} at ${prospect.company}. We help teams like Armis uncover warm paths and multi-thread into buying groups automatically. Open to sharing a quick idea?`,
+        thankyou: `Thanks for connecting, ${prospect.name}. Looking forward to sharing how Boomerang helps sales teams tap warm networks to accelerate deals.`,
+        inmail: `Quick thought for ${prospect.company}: customers like Armis use Boomerang to identify warm executives and sponsors in their network so reps are not starting from scratch. Open to a short chat?`,
+        email: `Subject: Idea for ${prospect.company} based on Armis\n\nHi ${prospect.name},\n\nI speak with sales leaders who are trying to de-risk commit deals and expand coverage in key accounts without adding noise for reps.\n\nAt Boomerang, we help companies like Armis automatically surface warm introductions and past champions so reps can multi-thread deals and protect pipeline.\n\nWould you be open to a 15-minute conversation to see if this approach could help at ${prospect.company}?\n\nBest,\nKushal`
+      };
+    }
+
+    function App() {
+      const [companyUrl, setCompanyUrl] = useState('https://www.getboomerang.ai');
+      const [icp, setIcp] = usePersistentState('icp', {
+        titles: 'VP Sales, CRO',
+        industries: 'Cybersecurity',
+        size: '200-5000'
+      });
+      const [prospects, setProspects] = usePersistentState('prospects', []);
+      const [selectedProspect, setSelectedProspect] = useState(null);
+      const [content, setContent] = useState({});
+
+      useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sharedProspect = urlParams.get('prospect');
+        if (sharedProspect) {
+          try {
+            setSelectedProspect(JSON.parse(decodeURIComponent(sharedProspect)));
+          } catch {}
+        }
+      }, []);
+
+      useEffect(() => {
+        if (selectedProspect) {
+          setContent(generateContent(selectedProspect, icp, { url: companyUrl }));
+        }
+      }, [selectedProspect, icp, companyUrl]);
+
+      const addProspect = (e) => {
+        e.preventDefault();
+        const form = new FormData(e.target);
+        const role = form.get('role');
+        const newProspect = {
+          id: Date.now(),
+          name: form.get('name'),
+          role,
+          company: form.get('company'),
+          status: 'pending',
+          researched: roleInsights[role] || 'sales leadership in your ICP'
+        };
+        setProspects([...prospects, newProspect]);
+        setSelectedProspect(newProspect);
+        e.target.reset();
+      };
+
+      const updateStatus = (id, status) => {
+        setProspects(prospects.map(p => p.id === id ? { ...p, status } : p));
+      };
+
+      const nextActions = {
+        pending: 'Send LinkedIn invite with note',
+        invited: 'If accepted, send thank you; if not, send InMail',
+        accepted: 'Send email referencing LinkedIn',
+        inmailed: 'Follow up via email',
+        emailed: 'Set reminder to call or follow up later'
+      };
+
+      const exportCsv = () => {
+        const csv = prospects.map(p =>
+          `${p.name},${p.role},${p.company},${p.status},${p.researched}`
+        ).join('\n');
+        const a = document.createElement('a');
+        a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+        a.download = 'sales-pipeline.csv';
+        a.click();
+      };
+
+      const shareProspect = () => {
+        if (!selectedProspect) return;
+        const url = `${window.location.origin}${window.location.pathname}?prospect=${encodeURIComponent(JSON.stringify(selectedProspect))}`;
+        navigator.clipboard.writeText(url);
+        alert('Share URL copied!');
+      };
+
+      return (
+        <div className="app">
+          <h1>Sales Outreach Intelligence Platform</h1>
+          <p>Company URL: {companyUrl}</p>
+
+          <div className="section">
+            <h2>ICP Setup</h2>
+            <input
+              value={companyUrl}
+              onChange={e => setCompanyUrl(e.target.value)}
+              placeholder="Company website (for value prop context)"
+            />
+            <input
+              value={icp.titles}
+              onChange={e => setIcp({ ...icp, titles: e.target.value })}
+              placeholder="Job titles (VP Sales, CRO)"
+            />
+            <input
+              value={icp.industries}
+              onChange={e => setIcp({ ...icp, industries: e.target.value })}
+              placeholder="Industries (Cybersecurity)"
+            />
+            <input
+              value={icp.size}
+              onChange={e => setIcp({ ...icp, size: e.target.value })}
+              placeholder="Company size (200-5000 employees)"
+            />
+          </div>
+
+          <div className="section">
+            <h2>Add Prospect</h2>
+            <form onSubmit={addProspect}>
+              <input name="name" placeholder="Name" required />
+              <input name="role" placeholder="Role (VP Sales)" required />
+              <input name="company" placeholder="Company" required />
+              <button type="submit">Add & Prep</button>
+            </form>
+          </div>
+
+          <div className="section">
+            <h2>Pipeline Dashboard ({prospects.length})</h2>
+            <button onClick={exportCsv}>Export CSV</button>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role / Company</th>
+                  <th>Status</th>
+                  <th>Next Action</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {prospects.map(p => (
+                  <tr key={p.id} className="prospect-row">
+                    <td>{p.name}</td>
+                    <td>{p.role} @ {p.company}</td>
+                    <td><span className={`status ${p.status}`}>{p.status}</span></td>
+                    <td>{nextActions[p.status]}</td>
+                    <td>
+                      <button onClick={() => setSelectedProspect(p)}>Go / No-Go</button>
+                      <select value={p.status} onChange={e => updateStatus(p.id, e.target.value)}>
+                        <option value="pending">pending</option>
+                        <option value="invited">invited</option>
+                        <option value="accepted">accepted</option>
+                        <option value="inmailed">inmailed</option>
+                        <option value="emailed">emailed</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {selectedProspect && (
+            <div className="section">
+              <h2>Go / No-Go: {selectedProspect.name}</h2>
+              <p><strong>Researched insight:</strong> {selectedProspect.researched}</p>
+              <p>
+                <strong>Suggested next task:</strong> {nextActions[selectedProspect.status]} |
+                <label> <input type="checkbox" /> Automate?</label>
+              </p>
+              <div>
+                <h3>Content drafts</h3>
+                <div className="content-draft"><strong>LinkedIn note:</strong> {content.note}</div>
+                <div className="content-draft"><strong>Thank you message:</strong> {content.thankyou}</div>
+                <div className="content-draft"><strong>InMail:</strong> {content.inmail}</div>
+                <div className="content-draft"><strong>Email:</strong> <pre style={{whiteSpace:'pre-wrap'}}>{content.email}</pre></div>
+              </div>
+              <button onClick={shareProspect}>Share prospect</button>
+              <button onClick={() => setSelectedProspect(null)}>Close</button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
 </body>
 </html>
